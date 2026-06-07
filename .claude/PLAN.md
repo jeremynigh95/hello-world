@@ -8,10 +8,15 @@
 - [x] Initialize git repository
 - [x] Push to GitHub
 
-### Phase 2 — Expand (future)
-- [ ] Add a test suite with pytest
+### Phase 2 — Testing & CI
+- [x] Add a test suite with pytest
+- [x] Add coverage enforcement (80% minimum)
+- [x] Add CI via GitHub Actions
+- [x] Add ADR-002 for pytest decision
+
+### Phase 3 — Expand (future)
 - [ ] Add more complex functionality (TBD)
-- [ ] Add CI via GitHub Actions
+- [ ] Add integration tests when multiple components exist
 
 ## Notes
 - Add new tasks here as the project grows

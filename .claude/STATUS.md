@@ -3,14 +3,18 @@
 **Last updated:** 2026-06-07
 
 ## Current state
-Project scaffolding complete. Foundation phase done.
+Testing infrastructure complete. Phases 1 and 2 done.
 
 ## Just finished
-- Created CLAUDE.md, .claude/PLAN.md, .claude/STATUS.md
-- Initialized git and pushed to GitHub
+- Added pytest + pytest-cov with 80% coverage enforcement
+- Added GitHub Actions CI (runs on every push/PR to main)
+- Refactored hello.py to expose a testable `greet()` function
+- Added unit tests for greet()
+- Added ADR-002 for pytest decision
+- Encoded testing requirements into CLAUDE.md so Claude follows them automatically
 
 ## Up next
-- Define Phase 2 scope (what should this project do beyond Hello World?)
+- Define Phase 3 scope — what does this project actually do?
 
 ## Blockers / decisions pending
 - None
