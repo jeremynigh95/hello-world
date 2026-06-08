@@ -11,7 +11,37 @@ import pytest
 pytest.importorskip("PySide6")
 pytest.importorskip("pytestqt")
 
+from PySide6.QtCore import QEvent  # noqa: E402
+from PySide6.QtGui import QFocusEvent  # noqa: E402
+from PySide6.QtWidgets import QApplication  # noqa: E402
+
 from gui.main_window import MainWindow  # noqa: E402
+from main import build_repository  # noqa: E402
+
+
+def _completer_texts(window):
+    model = window.completer.model()
+    return [model.item(row).text() for row in range(model.rowCount())]
+
+
+def test_search_reflects_phrases_saved_by_another_instance(qtbot, tmp_path):
+    # Two instances sharing one database file (the multi-user scenario).
+    db_path = str(tmp_path / "shared.db")
+    repo_here = build_repository(db_path)
+    repo_other = build_repository(db_path)
+    window = MainWindow(repo_here)
+    qtbot.addWidget(window)
+
+    assert "hello world over here" not in _completer_texts(window)
+
+    # The other instance saves a new phrase.
+    repo_other.add("hello world over here")
+
+    # The user clicks into the search box to start a new search.
+    QApplication.sendEvent(window.search, QFocusEvent(QEvent.Type.FocusIn))
+
+    # It should now be searchable here, without this window having saved.
+    assert "hello world over here" in _completer_texts(window)
 
 
 def test_select_append_save_adds_phrase(qtbot, repo):

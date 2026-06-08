@@ -5,7 +5,7 @@ Append text -> live char counts and color update -> Save (new phrase) or
 Clear (start over). All logic is delegated; this file is wiring only.
 """
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QEvent, Qt
 from PySide6.QtGui import QColor, QStandardItem, QStandardItemModel
 from PySide6.QtWidgets import (
     QCompleter,
@@ -42,6 +42,11 @@ class MainWindow(QMainWindow):
         self.completer.setCompletionMode(QCompleter.PopupCompletion)
         self.completer.activated[str].connect(self._on_selected)
         self.search.setCompleter(self.completer)
+        # Re-read the database whenever the user starts a new search, so
+        # phrases saved by another running instance show up here. A desktop
+        # app sharing a file gets no push notification of others' writes, so
+        # we pull the latest at the moment a search begins.
+        self.search.installEventFilter(self)
 
         self.select_btn = QPushButton("Select")
         self.select_btn.clicked.connect(lambda: self._on_selected(self.search.text()))
@@ -82,6 +87,13 @@ class MainWindow(QMainWindow):
         container = QWidget()
         container.setLayout(layout)
         self.setCentralWidget(container)
+
+    # -- events -----------------------------------------------------------
+    def eventFilter(self, obj, event):
+        """Refresh the phrase list from the store when search gains focus."""
+        if obj is self.search and event.type() == QEvent.Type.FocusIn:
+            self._reload_phrases()
+        return super().eventFilter(obj, event)
 
     # -- data -------------------------------------------------------------
     def _reload_phrases(self) -> None:

@@ -4,7 +4,15 @@
 
 ## Current state
 Phase 3 complete. The layered Phrasebook app is built, tested, and documented.
-All 29 tests pass; core + db at 100% coverage (gate is 80%).
+All 30 tests pass; core + db at 100% coverage (gate is 80%).
+
+## Known behavior / limitations
+- Cross-instance freshness: each window refreshes its phrase list from the DB
+  on startup, after a local save, and when the search box gains focus. So
+  another instance's saved phrases appear when you click into the search box
+  to start a new search. They do NOT appear live while a window sits idle with
+  the search box already focused — acceptable for "few users, occasional
+  writes". A polling/live-refresh option is noted in PLAN Phase 4.
 
 ## Layer state
 - **db/**: complete — WAL connection, schema + seed, `PhraseRepository` +
@@ -15,6 +23,10 @@ All 29 tests pass; core + db at 100% coverage (gate is 80%).
   Save/Clear, live counts and colors. pytest-qt smoke tests pass.
 
 ## Just finished
+- Fixed stale-search bug: a window now re-reads the DB when its search box
+  gains focus, so phrases saved by another instance become searchable without
+  the local window having to save first. Regression test added
+  (test_search_reflects_phrases_saved_by_another_instance).
 - Restructured to `src/{gui,core,db}` with one-way dependencies (gui→core→db)
 - Built all three layers + `src/main.py` entry point
 - Seeded DB with "hello world" and "bye world"

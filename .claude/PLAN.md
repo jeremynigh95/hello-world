@@ -23,6 +23,8 @@
 - [x] Update CI for PySide6 / headless Qt
 
 ### Phase 4 — Polish (future)
+- [ ] Live cross-instance refresh (poll/watch the DB) so other instances'
+      writes appear without re-focusing the search box
 - [ ] True inline "ghost text" autocomplete in the search box
 - [ ] Enforce the layer dependency rule automatically (import-linter in CI)
 - [ ] Add numbered migrations once the schema needs to change
