@@ -2,3 +2,11 @@ __pycache__/
 *.pyc
 .coverage
 .pytest_cache/
+
+# SQLite database files (created at runtime)
+*.db
+*.db-wal
+*.db-shm
+
+# Machine-local Claude Code settings
+.claude/settings.local.json

@@ -1,9 +1,12 @@
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=. --cov-report=term-missing"
-
-[tool.coverage.run]
-omit = ["tests/*"]
+pythonpath = ["src"]
+addopts = "--cov=core --cov=db --cov-report=term-missing"
 
 [tool.coverage.report]
 fail_under = 80
+exclude_also = [
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "@(abc\\.)?abstractmethod",
+]
