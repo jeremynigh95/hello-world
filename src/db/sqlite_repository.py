@@ -29,6 +29,12 @@ class SqlitePhraseRepository(PhraseRepository):
         ).fetchall()
         return [Phrase(row["id"], row["text"]) for row in rows]
 
+    def exists(self, text: str) -> bool:
+        row = self._conn.execute(
+            "SELECT 1 FROM phrases WHERE text = ? LIMIT 1", (text,)
+        ).fetchone()
+        return row is not None
+
     def add(self, text: str) -> Phrase:
         if not text:
             raise ValueError("phrase text must not be empty")

@@ -20,6 +20,10 @@ class PhraseRepository(ABC):
         """Return phrases whose text starts with ``prefix``."""
 
     @abstractmethod
+    def exists(self, text: str) -> bool:
+        """Return True if a phrase with exactly this ``text`` is stored."""
+
+    @abstractmethod
     def add(self, text: str) -> Phrase:
         """Persist ``text`` and return it as a ``Phrase``.
 

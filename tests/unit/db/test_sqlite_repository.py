@@ -42,3 +42,17 @@ def test_add_is_idempotent_for_duplicates(repo):
 def test_add_empty_text_raises(repo):
     with pytest.raises(ValueError):
         repo.add("")
+
+
+def test_exists_returns_true_for_stored_phrase(repo):
+    assert repo.exists("hello world") is True
+
+
+def test_exists_returns_false_for_unknown_phrase(repo):
+    assert repo.exists("not stored") is False
+
+
+def test_exists_is_exact_match_only(repo):
+    # The duplicate rule is exact-match: case/spacing variants are distinct.
+    assert repo.exists("Hello World") is False
+    assert repo.exists("hello  world") is False

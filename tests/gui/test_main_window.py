@@ -55,6 +55,20 @@ def test_select_append_save_adds_phrase(qtbot, repo):
     assert "hello world!!!" in [p.text for p in repo.list_all()]
 
 
+def test_saving_existing_phrase_is_blocked_with_feedback(qtbot, repo):
+    window = MainWindow(repo)
+    qtbot.addWidget(window)
+
+    before = len(repo.list_all())
+    window._on_selected("hello world")  # already seeded; no append
+    window._on_save()
+
+    # No new row created, and the user is told it already exists.
+    assert len(repo.list_all()) == before
+    assert "hello world" in window.status_label.text()
+    assert "already" in window.status_label.text().lower()
+
+
 def test_counts_update_on_select(qtbot, repo):
     window = MainWindow(repo)
     qtbot.addWidget(window)

@@ -29,6 +29,8 @@
 - [ ] Enforce the layer dependency rule automatically (import-linter in CI)
 - [ ] Add numbered migrations once the schema needs to change
 - [ ] Package as a distributable app (PyInstaller) if desired
+- [ ] Optional: normalized duplicate rule (case/whitespace-insensitive) — would
+      add a `core` normalization function; current rule is exact-match only
 
 ## Notes
 - Add new tasks here as the project grows

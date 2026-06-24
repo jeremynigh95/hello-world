@@ -1,10 +1,10 @@
 # Status
 
-**Last updated:** 2026-06-07
+**Last updated:** 2026-06-23
 
 ## Current state
 Phase 3 complete. The layered Phrasebook app is built, tested, and documented.
-All 30 tests pass; core + db at 100% coverage (gate is 80%).
+All 34 tests pass; core + db at 100% coverage (gate is 80%).
 
 ## Known behavior / limitations
 - Cross-instance freshness: each window refreshes its phrase list from the DB
@@ -23,6 +23,13 @@ All 30 tests pass; core + db at 100% coverage (gate is 80%).
   Save/Clear, live counts and colors. pytest-qt smoke tests pass.
 
 ## Just finished
+- Duplicate-save feedback: Save on an already-stored phrase used to silently
+  no-op (DB `UNIQUE` + `ON CONFLICT DO NOTHING`) and clear the form, so it
+  looked like a duplicate was accepted. Added `PhraseRepository.exists(text)`
+  (exact match) and made the GUI show "'<phrase>' is already saved." instead of
+  swallowing the Save. Duplicate rule is **exact match only** (case/spacing
+  variants remain distinct, by design). Regression + unit tests added
+  (test_saving_existing_phrase_is_blocked_with_feedback, test_exists_*).
 - Fixed stale-search bug: a window now re-reads the DB when its search box
   gains focus, so phrases saved by another instance become searchable without
   the local window having to save first. Regression test added

@@ -67,6 +67,8 @@ class MainWindow(QMainWindow):
         self.clear_btn = QPushButton("Clear")
         self.clear_btn.clicked.connect(self._on_clear)
 
+        self.status_label = QLabel("")
+
         layout = QVBoxLayout()
         layout.addWidget(QLabel("Search"))
         layout.addWidget(self.search)
@@ -83,6 +85,7 @@ class MainWindow(QMainWindow):
         button_row.addWidget(self.save_btn)
         button_row.addWidget(self.clear_btn)
         layout.addLayout(button_row)
+        layout.addWidget(self.status_label)
 
         container = QWidget()
         container.setLayout(layout)
@@ -136,6 +139,9 @@ class MainWindow(QMainWindow):
         new_text = self._new_text().strip()
         if not new_text:
             return
+        if self._repo.exists(new_text):
+            self.status_label.setText(f"'{new_text}' is already saved.")
+            return
         self._repo.add(new_text)
         self._reload_phrases()
         self._on_clear()
@@ -151,3 +157,4 @@ class MainWindow(QMainWindow):
         self.preview_label.setText("New: (none)")
         self.preview_label.setStyleSheet("")
         self.counts_label.setText("")
+        self.status_label.setText("")
